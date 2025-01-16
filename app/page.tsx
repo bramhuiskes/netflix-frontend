@@ -1,5 +1,9 @@
 "use client";
 import { useState } from "react";
+import { Bar } from "react-chartjs-2";
+import {Chart as ChartJS, BarElement, CategoryScale, LinearScale, Tooltip, Legend, ChartData} from "chart.js";
+
+ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
 export default function Home() {
   const [token, setToken] = useState<string | null>(null);
@@ -9,8 +13,27 @@ export default function Home() {
     viewer_indications?: string;
     imageUrl?: string;
   }
-
-  const [movies, setMovies] = useState<Movie[]>([]);
+  interface History {
+    id: number;
+    profile_id: number;
+    content_id: number;
+    content_type: string;
+    watch_date: string;
+    watch_duration: number;
+    completion_status: string;
+  }
+  const [chartData, setChartData] = useState<ChartData<'bar'>>({
+    labels: [],
+    datasets: [
+      {
+        label: '',
+        data: [],
+        backgroundColor: [],
+        borderColor: [],
+        borderWidth: 1,
+      },
+    ],
+  });  const [movies, setMovies] = useState<Movie[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -25,8 +48,8 @@ export default function Home() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          email: "bramhuiskes@gmail.com",
-          password: "bram",
+          email: "test@test.nl",
+          password: "test",
         }),
       });
 
@@ -49,16 +72,27 @@ export default function Home() {
   const fetchMovies = async (token: string) => {
     try {
       const movieResponse = await fetch(
-        "http://127.0.0.1:8000/api/movies",
+        "http://127.0.0.1:8000/api/movie",
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         }
       );
-      if (movieResponse.ok) {
+
+      const historyResponse = await fetch(
+          "http://127.0.0.1:8000/api/view_history",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            }
+          }
+      )
+
+      if (movieResponse.ok && historyResponse.ok) {
         const movieData: Movie[] = await movieResponse.json();
-  
+        const historyData: History[] = await historyResponse.json();
+
         const moviesWithPosters = await Promise.all(
           movieData.map(async (movie) => {
             const posterResponse = await fetch(
@@ -87,6 +121,56 @@ export default function Home() {
             }
           })
         );
+
+        const historyDataMapped = await Promise.all(
+            historyData.map(async (history) => {
+              const id = history.content_id;
+              const type = history.content_type;
+
+              if (type == "Movie")
+              {
+                const singleMovie = moviesWithPosters.filter(movie => movie.id === id)[0];
+
+                return singleMovie.title.toString();
+              } else {
+                return "";
+              }
+            })
+        );
+
+        const movieCounts: { [key: string]: number } = {};
+
+        historyDataMapped.forEach((movie) => {
+          movieCounts[movie] = (movieCounts[movie] || 0) + 1;
+        });
+
+        console.log(movieCounts);  // Output the counts
+
+        const movieTitles = Object.keys(movieCounts);
+        const movieDataChart = movieTitles.map((title) => movieCounts[title]);
+
+        setChartData({
+          labels: movieTitles, // Movie titles (if `historyDataMapped` is just the list of titles)
+          datasets: [
+            {
+              label: "Views",
+              data: movieDataChart, // View counts for each movie (now as integers)
+              backgroundColor: [
+                "rgba(75, 192, 192, 0.6)", // Bar colors
+                "rgba(255, 99, 132, 0.6)",
+                "rgba(54, 162, 235, 0.6)",
+              ],
+              borderColor: [
+                "rgba(75, 192, 192, 1)", // Bar border colors
+                "rgba(255, 99, 132, 1)",
+                "rgba(54, 162, 235, 1)",
+              ],
+              borderWidth: 1, // Border width
+            },
+          ],
+        });
+
+
         setMovies(moviesWithPosters);
       } else {
         setError("Failed to fetch movies");
@@ -135,9 +219,11 @@ export default function Home() {
                 </div>
               ))}
             </div>
+            <h2 className="text-2xl font-bold mb-4">Most seen movies</h2>
+            <Bar data={chartData} options={{ responsive: false, maintainAspectRatio: false }} />
           </div>
         ) : (
-          <div className="flex flex-col items-center justify-center h-full">
+            <div className="flex flex-col items-center justify-center h-full">
             <h2 className="text-2xl mb-4">Login to see movies</h2>
             {error && <p className="text-red-500 mt-4">{error}</p>}
           </div>
