@@ -18,8 +18,8 @@ Group: Bram Huiskes, Gideon Dijkhuis & Yunus Karakoç
 Clone this repository to your local machine:
 
 ```bash
-git clone https://github.com/yourusername/nextjs-frontend-setup.git
-cd nextjs-frontend-setup
+git clone https://github.com/bramhuiskes/netflix-frontend.git
+cd netflix-frontend
 ```
 
 ### **Step 2: Install Dependencies**
