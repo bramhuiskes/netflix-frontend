@@ -2,8 +2,6 @@
 
 Group: Bram Huiskes, Gideon Dijkhuis & Yunus Karakoç
 
-To share your Next.js project with others and ensure easy setup, follow the instructions below:
-
 ---
 
 ## **Prerequisites**
