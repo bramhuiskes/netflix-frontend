@@ -1,8 +1,48 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Next.js Frontend Setup Usecase Netflix
 
-## Getting Started
+Group: Bram Huiskes, Gideon Dijkhuis & Yunus Karakoç
 
-First, run the development server:
+To share your Next.js project with others and ensure easy setup, follow the instructions below:
+
+---
+
+## **Prerequisites**
+
+1. Install [Node.js](https://nodejs.org/) (which includes npm).
+2. (Optional) Install a code editor like [VS Code](https://code.visualstudio.com/).
+
+---
+
+## **Setup Instructions**
+
+### **Step 1: Clone the Repository**
+
+Clone this repository to your local machine:
+
+```bash
+git clone https://github.com/yourusername/nextjs-frontend-setup.git
+cd nextjs-frontend-setup
+```
+
+### **Step 2: Install Dependencies**
+
+Run the following command to install the required dependencies:
+
+```bash
+npm install
+# or
+yarn install
+# or
+pnpm install
+# or
+bun install
+```
+
+---
+
+### **Step 3: Start the Development Server**
+
+Run the development server:
 
 ```bash
 npm run dev
@@ -14,23 +54,50 @@ pnpm dev
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### **Step 4: Access the Application**
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The application will be available at [http://localhost:3000](http://localhost:3000).
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## **Additional Commands**
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Stop the Development Server**:
+  Press `Ctrl + C` in your terminal to stop the server.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **Build the Application for Production**:
+  ```bash
+  npm run build
+  # or
+  yarn build
+  # or
+  pnpm build
+  # or
+  bun build
+  ```
 
-## Deploy on Vercel
+- **Run the Application in Production Mode**:
+  ```bash
+  npm run start
+  # or
+  yarn start
+  # or
+  pnpm start
+  # or
+  bun start
+  ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **Run Next.js Commands**:
+  ```bash
+  npm run <command>
+  # or
+  yarn <command>
+  # or
+  pnpm <command>
+  # or
+  bun <command>
+  ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+--- 
